@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#0d6efd">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Profile - Account Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="dashboard-background"></div>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="bi bi-wallet2 me-2"></i>Account Management
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                            <i class="bi bi-house-door me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="profile.html">
+                            <i class="bi bi-person me-1"></i>Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm ms-2" id="themeToggle" title="Toggle Dark Mode">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm ms-2" onclick="auth.logout()" title="Logout">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Container -->
+    <div class="container-fluid mt-3">
+        <div id="alertContainer"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="bi bi-person-circle me-2"></i>User Profile</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Profile Picture Section -->
+                        <div class="text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                <img src="assets/img/default-user.svg" alt="Profile Picture" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+PGNpcmNsZSBjeD0iNzUiIGN5PSI3NSIgcj0iNzUiIGZpbGw9IiNlOWVjZWYiLz48Y2lyY2xlIGN4PSI3NSIgY3k9IjYwIiByPSIyNSIgZmlsbD0iI2Y4ZjlmYSIvPjxwYXRoIGQ9Ik0gMzAgMTIwIFEgMzAgMTAwIDc1IDEwMCBRIDEyMCAxMDAgMTIwIDEyMCBMIDEyMCAxNTAgTCAzMCAxNTAgWiIgZmlsbD0iI2Y4ZjlmYSIvPjwvc3ZnPg=='" 
+                                     class="rounded-circle border border-3 border-primary" 
+                                     id="profilePicture" 
+                                     style="width: 150px; height: 150px; object-fit: cover;">
+                                <label for="profilePictureInput" class="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 end-0" 
+                                        style="width: 40px; height: 40px; cursor: pointer;">
+                                    <i class="bi bi-camera"></i>
+                                </label>
+                                <input type="file" id="profilePictureInput" accept="image/*" class="d-none">
+                            </div>
+                            <h5 class="mt-3 mb-0" id="userName">User Name</h5>
+                            <p class="text-muted" id="userEmail">user@example.com</p>
+                        </div>
+
+                        <!-- Profile Form -->
+                        <form id="profileForm">
+                            <div class="mb-3">
+                                <label for="profileName" class="form-label">
+                                    <i class="bi bi-person me-2"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" id="profileName" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="profileEmail" class="form-label">
+                                    <i class="bi bi-envelope me-2"></i>Email Address
+                                </label>
+                                <input type="email" class="form-control" id="profileEmail" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="profilePhone" class="form-label">
+                                    <i class="bi bi-phone me-2"></i>Phone Number
+                                </label>
+                                <input type="tel" class="form-control" id="profilePhone" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="profilePassword" class="form-label">
+                                    <i class="bi bi-lock me-2"></i>New Password (Leave blank to keep current)
+                                </label>
+                                <input type="password" class="form-control" id="profilePassword" placeholder="Enter new password">
+                                <small class="form-text text-muted">Password must be at least 6 characters if changing</small>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Account Statistics -->
+                        <div class="mt-4 pt-4 border-top">
+                            <h5 class="mb-3"><i class="bi bi-graph-up me-2"></i>Account Statistics</h5>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted mb-1">Total Transactions</h6>
+                                            <h4 class="mb-0" id="totalTransactions">0</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted mb-1">Account Created</h6>
+                                            <h6 class="mb-0" id="accountCreated">-</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/transactions.js"></script>
+    <script>
+        // Profile Management
+        const profile = {
+            init: function() {
+                // Check if user is logged in
+                if (!auth.isLoggedIn()) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Load user data
+                this.loadUserData();
+                
+                // Setup event listeners
+                this.setupEventListeners();
+                
+                // Initialize theme
+                this.initTheme();
+            },
+            
+            loadUserData: function() {
+                const user = auth.getCurrentUser();
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Get full user data
+                const fullUser = auth.getUserById(user.id);
+                if (!fullUser) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Populate form
+                document.getElementById('profileName').value = fullUser.name;
+                document.getElementById('profileEmail').value = fullUser.email;
+                document.getElementById('profilePhone').value = fullUser.phone;
+                document.getElementById('userName').textContent = fullUser.name;
+                document.getElementById('userEmail').textContent = fullUser.email;
+                
+                // Load profile picture
+                if (fullUser.profilePicture) {
+                    document.getElementById('profilePicture').src = fullUser.profilePicture;
+                }
+                
+                // Account created date
+                if (fullUser.createdAt) {
+                    const createdDate = new Date(fullUser.createdAt);
+                    document.getElementById('accountCreated').textContent = createdDate.toLocaleDateString('en-IN', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                }
+                
+                // Load transaction statistics
+                const allTransactions = transactions.getAll();
+                document.getElementById('totalTransactions').textContent = allTransactions.length;
+            },
+            
+            setupEventListeners: function() {
+                // Profile form submit
+                document.getElementById('profileForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveProfile();
+                });
+                
+                // Profile picture upload
+                document.getElementById('profilePictureInput').addEventListener('change', (e) => {
+                    this.handleProfilePictureUpload(e.target.files[0]);
+                });
+                
+                // Theme toggle
+                document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
+            },
+            
+            saveProfile: function() {
+                const user = auth.getCurrentUser();
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                const name = document.getElementById('profileName').value.trim();
+                const email = document.getElementById('profileEmail').value.trim();
+                const phone = document.getElementById('profilePhone').value.trim();
+                const password = document.getElementById('profilePassword').value;
+                
+                // Validation
+                if (!name || !email || !phone) {
+                    this.showAlert('Please fill in all required fields!', 'error');
+                    return;
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    this.showAlert('Please enter a valid email address!', 'error');
+                    return;
+                }
+                
+                // Phone validation
+                const phoneRegex = /^[0-9]{10,}$/;
+                if (!phoneRegex.test(phone.replace(/\D/g, ''))) {
+                    this.showAlert('Please enter a valid phone number!', 'error');
+                    return;
+                }
+                
+                // Password validation (if provided)
+                if (password && password.length < 6) {
+                    this.showAlert('Password must be at least 6 characters!', 'error');
+                    return;
+                }
+                
+                // Prepare updates
+                const updates = {
+                    name: name,
+                    email: email,
+                    phone: phone
+                };
+                
+                // Add password if provided
+                if (password) {
+                    updates.password = password;
+                }
+                
+                // Update profile
+                const result = auth.updateProfile(user.id, updates);
+                
+                if (result.success) {
+                    this.showAlert(result.message, 'success');
+                    // Reload user data
+                    setTimeout(() => {
+                        this.loadUserData();
+                        document.getElementById('profilePassword').value = '';
+                    }, 500);
+                } else {
+                    this.showAlert(result.message, 'error');
+                }
+            },
+            
+            handleProfilePictureUpload: function(file) {
+                if (!file) return;
+                
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    this.showAlert('Please select an image file!', 'error');
+                    return;
+                }
+                
+                // Validate file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    this.showAlert('Image size must be less than 2MB!', 'error');
+                    return;
+                }
+                
+                // Read file as data URL
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageData = e.target.result;
+                    
+                    // Update profile picture display
+                    document.getElementById('profilePicture').src = imageData;
+                    
+                    // Save to user profile
+                    const user = auth.getCurrentUser();
+                    if (user) {
+                        const result = auth.updateProfile(user.id, { profilePicture: imageData });
+                        if (result.success) {
+                            this.showAlert('Profile picture updated successfully!', 'success');
+                        } else {
+                            this.showAlert('Failed to update profile picture!', 'error');
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            },
+            
+            initTheme: function() {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                this.applyTheme(savedTheme);
+            },
+            
+            toggleTheme: function() {
+                const currentTheme = document.body.getAttribute('data-theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                this.applyTheme(newTheme);
+                localStorage.setItem('theme', newTheme);
+            },
+            
+            applyTheme: function(theme) {
+                document.body.setAttribute('data-theme', theme);
+                const themeIcon = document.querySelector('#themeToggle i');
+                if (theme === 'dark') {
+                    themeIcon.classList.remove('bi-moon-stars');
+                    themeIcon.classList.add('bi-sun');
+                } else {
+                    themeIcon.classList.remove('bi-sun');
+                    themeIcon.classList.add('bi-moon-stars');
+                }
+            },
+            
+            showAlert: function(message, type = 'success') {
+                const container = document.getElementById('alertContainer');
+                if (!container) return;
+                
+                const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+                const alertHTML = `
+                    <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                        <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                
+                container.innerHTML = alertHTML;
+                
+                setTimeout(() => {
+                    const alert = container.querySelector('.alert');
+                    if (alert) {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
+                }, 5000);
+            }
+        };
+        
+        // Initialize profile when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            profile.init();
+        });
+    </script>
+</body>
+</html>
